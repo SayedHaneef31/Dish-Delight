@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.dishdelight.API.PageCountRequest
 import com.example.dishdelight.API.RetrofitClient
+import com.example.dishdelight.Data.CartItem
 import com.example.dishdelight.Data.Dish
 import com.example.dishdelight.databinding.ActivityHomeBinding
 import com.example.dishdelight.databinding.CuisineCardBinding
@@ -26,7 +27,7 @@ import kotlinx.coroutines.launch
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-
+    private val cartItems = mutableListOf<CartItem>()
 
     override fun attachBaseContext(newBase: Context) {
         val language = LocaleHelper.getLanguage(newBase)
@@ -140,7 +141,7 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.cart -> {
                     startActivity(Intent(this, CartActivity::class.java))
-                    finish()
+
                     true
                 }
                 else -> false
@@ -196,9 +197,63 @@ class HomeActivity : AppCompatActivity() {
                 .error(R.drawable.salad)
                 .into(popularFoodCardBinding.foodImageIdddd)
 
+            popularFoodCardBinding.btnAddIddddddd.setOnClickListener {
+                popularFoodCardBinding.quantitySelector.visibility = View.VISIBLE
+                popularFoodCardBinding.btnAddIddddddd.visibility = View.GONE
+                popularFoodCardBinding.quantityIddddd.text = "1"
+
+                // Add dish to cart with quantity 1
+                addToCart(dish, 1)
+            }
+
+            popularFoodCardBinding.btnPlusIddddd.setOnClickListener {
+                var quantity = popularFoodCardBinding.quantityIddddd.text.toString().toInt()
+                quantity++
+                popularFoodCardBinding.quantityIddddd.text = quantity.toString()
+
+                updateCartQuantity(dish, quantity)
+            }
+
+            popularFoodCardBinding.btnMinusIdddd.setOnClickListener {
+                var quantity = popularFoodCardBinding.quantityIddddd.text.toString().toInt()
+                if (quantity > 1) {
+                    quantity--
+                    popularFoodCardBinding.quantityIddddd.text = quantity.toString()
+                    updateCartQuantity(dish, quantity)
+                } else {
+                    popularFoodCardBinding.quantitySelector.visibility = View.GONE
+                    popularFoodCardBinding.btnAddIddddddd.visibility = View.VISIBLE
+
+                    removeFromCart(dish)
+                }
+            }
+
             container.addView(popularFoodCardBinding.root)
         }
     }
+
+    private fun addToCart(dish: Dish, quantity: Int) {
+        var existingItem = cartItems.find { it.dish.id == dish.id }
+        if(existingItem==null)
+        {
+            cartItems.add(CartItem(dish, quantity))
+        }
+        else
+        {
+            existingItem.quantity = quantity
+
+        }
+    }
+
+    private fun updateCartQuantity(dish: Dish, newQuantity: Int) {
+        val existingItem = cartItems.find { it.dish.id == dish.id }
+        existingItem?.quantity = newQuantity
+    }
+
+    private fun removeFromCart(dish: Dish) {
+        cartItems.removeIf { it.dish.id == dish.id }
+    }
+
 
     private fun floatingButtwonWorking() {
         binding.floatingActionButton2.setOnClickListener { view ->
