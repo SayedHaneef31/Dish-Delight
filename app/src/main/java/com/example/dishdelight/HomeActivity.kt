@@ -2,17 +2,24 @@ package com.example.dishdelight
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.example.dishdelight.API.PageCountRequest
+import com.example.dishdelight.API.RetrofitClient
 import com.example.dishdelight.databinding.ActivityHomeBinding
+import com.example.dishdelight.databinding.CuisineCardBinding
 import com.example.dishdelight.databinding.PopularFoodCardBinding
+import kotlinx.coroutines.launch
 
 
 class HomeActivity : AppCompatActivity() {
@@ -33,11 +40,19 @@ class HomeActivity : AppCompatActivity() {
 
         enableBottomNavigation()
 
+        populateCuisineCategory()
+
         popluateFamousFood()
+
+
 
         floatingButtwonWorking()
 
+        enableCuisineNavigation()
 
+        binding.horizontalScrollContainer.setOnClickListener { view ->
+            startActivity(Intent(this, CuisineActivity::class.java))
+        }
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -45,6 +60,67 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    private fun populateCuisineCategory() {
+
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.api.getCuisineList(PageCountRequest(3,10))
+
+                if (response.isSuccessful)
+                {
+                    val cuisineResponse  = response.body()
+                    cuisineResponse?.let {
+
+                            val container= binding.horizontalScrollContainer
+                            container.removeAllViews()   //saare puraane views hta do
+
+                            for (cuisine in it.cuisines)
+                            {
+                               val cuisineCardBinding = CuisineCardBinding.inflate(layoutInflater,container,false)
+
+                               cuisineCardBinding.cuisineNameIdddd.text=cuisine.cuisine_name
+                                Log.d("Cuisines", cuisine.cuisine_name)
+
+                                Glide.with(this@HomeActivity)
+                                    .load(cuisine.cuisine_image_url)
+                                    .placeholder(R.drawable.broccoli)   // optional placeholder while loading
+                                    .error(R.drawable.broccoli)         // optional error image if load fails
+                                    .into(cuisineCardBinding.imageView)
+
+                                container.addView(cuisineCardBinding.root)
+
+                            }
+
+                    }
+
+                }
+                else{
+                    Toast.makeText(this@HomeActivity,"Failed: ${response.code()}", Toast.LENGTH_LONG).show()
+                }
+            }
+            catch (e: Exception)
+            {
+                e.printStackTrace()
+                Toast.makeText(this@HomeActivity,"Failed: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+
+//        repeat(3) {
+//            val cuisineCardBinding = CuisineCardBinding.inflate(layoutInflater)
+//
+//            cuisineCardBinding.textView6.text="North Indian"
+//
+//
+//            //Adding card view to container
+//            binding.horizontalScrollContainer.addView(cuisineCardBinding.root)
+//
+//        }
+    }
+
+    private fun enableCuisineNavigation() {
+//        binding.
     }
 
     private fun enableBottomNavigation() {
