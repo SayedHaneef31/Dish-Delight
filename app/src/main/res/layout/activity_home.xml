@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    app:backgroundTint="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:backgroundTint="@android:color/white"
 
     tools:context=".HomeActivity">
 
@@ -40,10 +40,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
 
-        android:textColor="@color/black"
-        android:textStyle="bold"
         android:text="@string/hello_there"
+        android:textColor="@color/black"
         android:textSize="40sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
@@ -51,11 +51,13 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+
+        android:layout_marginTop="28dp"
         android:text="@string/order_happiness"
         android:textColor="@color/black"
         android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -63,22 +65,22 @@
         android:id="@+id/horizontalScrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5">
 
         <LinearLayout
+            android:id="@+id/horizontalScrollContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center_vertical"
-            android:id="@+id/horizontalScrollContainer"
             android:orientation="horizontal"
 
             >
 
-<!--            We will fill the elements dynamically-->
+            <!--            We will fill the elements dynamically-->
 
 
         </LinearLayout>
@@ -88,14 +90,14 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="28dp"
         android:text="@string/handle_cravings"
         android:textColor="@color/black"
         android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="402dp"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"/>
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     <ScrollView
         android:id="@+id/horizontalScrollView2"
@@ -103,33 +105,24 @@
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
         android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigationnnnn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
-        app:layout_constraintBottom_toTopOf="@+id/navigationnnnn">
+        app:layout_constraintTop_toBottomOf="@+id/textView7">
 
         <LinearLayout
+            android:id="@+id/containerPopularFoods"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/containerPopularFoods">
+            android:orientation="vertical">
 
-<!--            Will be adding cards dynamically-->
-<!--            <include layout="@layout/popular_food_card" />-->
-<!--            <include layout="@layout/popular_food_card" />-->
-<!--            <include layout="@layout/popular_food_card" />-->
+            <!--            Will be adding cards dynamically-->
+            <!--            <include layout="@layout/popular_food_card" />-->
+            <!--            <include layout="@layout/popular_food_card" />-->
+            <!--            <include layout="@layout/popular_food_card" />-->
 
         </LinearLayout>
     </ScrollView>
-
-
-
-
-
-
-
-
-
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -145,18 +138,18 @@
         app:srcCompat="@drawable/menu_icon" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="0dp"
         android:id="@+id/navigationnnnn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
+        android:background="@drawable/bg_nav_bar"
         android:elevation="6dp"
         app:itemIconTint="@null"
         app:itemTextColor="@color/black"
         app:labelVisibilityMode="labeled"
-        android:background="@drawable/bg_nav_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.dishdelight.API.PageCountRequest
 import com.example.dishdelight.API.RetrofitClient
+import com.example.dishdelight.Data.Dish
 import com.example.dishdelight.databinding.ActivityHomeBinding
 import com.example.dishdelight.databinding.CuisineCardBinding
 import com.example.dishdelight.databinding.PopularFoodCardBinding
@@ -49,6 +50,13 @@ class HomeActivity : AppCompatActivity() {
         floatingButtwonWorking()
 
         enableCuisineNavigation()
+
+
+
+
+
+
+
 
         binding.horizontalScrollContainer.setOnClickListener { view ->
             startActivity(Intent(this, CuisineActivity::class.java))
@@ -142,42 +150,53 @@ class HomeActivity : AppCompatActivity() {
 
 
     private fun popluateFamousFood() {
-        repeat(3) {
-            val popularFoodCardBinding = PopularFoodCardBinding.inflate(layoutInflater)
 
-            popularFoodCardBinding.foodNameIddddd.text="Green Salad"
-            popularFoodCardBinding.foodRatingIddddd.text="4.1 ⭐"
-            popularFoodCardBinding.foodPriceIddddd.text="₹ 349"
+            lifecycleScope.launch {
+                try {
+                    val response = RetrofitClient.api.getCuisineList(PageCountRequest(3,10))
 
-            popularFoodCardBinding.btnAddIddddddd.setOnClickListener {
-                popularFoodCardBinding.quantitySelector.visibility = View.VISIBLE
-                popularFoodCardBinding.btnAddIddddddd.visibility = View.GONE
-                popularFoodCardBinding.quantityIddddd.text="1"
-            }
+                    if(response.isSuccessful)
+                    {
+                        val cuisineResponse  = response.body()
+                        cuisineResponse?.let {
+                            val allDishes=it.cuisines.flatMap { cuisine -> cuisine.items }
 
-            popularFoodCardBinding.btnPlusIddddd.setOnClickListener {
-                var quantity = popularFoodCardBinding.quantityIddddd.text.toString().toInt()
-                quantity++
-                popularFoodCardBinding.quantityIddddd.text = quantity.toString()
-            }
+                            val sortedDish=allDishes.sortedByDescending { dish -> dish.rating?.toDoubleOrNull()?:0.0 }
 
-            popularFoodCardBinding.btnMinusIdddd.setOnClickListener {
-                var quantity = popularFoodCardBinding.quantityIddddd.text.toString().toInt()
-                if(quantity>1){
-                    quantity--
-                    popularFoodCardBinding.quantityIddddd.text = quantity.toString()
+                            val topDishes=sortedDish.take(3)
+
+                            showTopThreeDishes(topDishes)
+                        }
+                    }
+                    else{
+                        Toast.makeText(this@HomeActivity,"Failed: ${response.code()}", Toast.LENGTH_LONG).show()
+                    }
                 }
-                else
-                {
-                    popularFoodCardBinding.quantitySelector.visibility = View.GONE
-                    popularFoodCardBinding.btnAddIddddddd.visibility = View.VISIBLE
+                catch (e: Exception){
+                    e.printStackTrace()
+                    Toast.makeText(this@HomeActivity,"Failed: ${e.message}", Toast.LENGTH_LONG).show()
 
                 }
             }
+    }
 
-            //Adding card view to container
-            binding.containerPopularFoods.addView(popularFoodCardBinding.root)
+    private fun showTopThreeDishes(topDishes: List<Dish>) {
+        val container = binding.containerPopularFoods
+        container.removeAllViews()
+        for (dish in topDishes) {
+            val popularFoodCardBinding = PopularFoodCardBinding.inflate(layoutInflater, container, false)
 
+            popularFoodCardBinding.foodNameIddddd.text=dish.name
+            popularFoodCardBinding.foodRatingIddddd.text=dish.rating+" ⭐"
+            popularFoodCardBinding.foodPriceIddddd.text="₹"+dish.price
+
+            Glide.with(this@HomeActivity)
+                .load(dish.image_url)
+                .placeholder(R.drawable.salad)
+                .error(R.drawable.salad)
+                .into(popularFoodCardBinding.foodImageIdddd)
+
+            container.addView(popularFoodCardBinding.root)
         }
     }
 
