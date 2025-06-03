@@ -162,10 +162,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
+        android:elevation="6dp"
         app:itemIconTint="@null"
         app:itemTextColor="@color/black"
         app:labelVisibilityMode="labeled"
-        android:background="@color/white"
+        android:background="@drawable/bg_nav_bar"
         app:menu="@menu/bottom_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
