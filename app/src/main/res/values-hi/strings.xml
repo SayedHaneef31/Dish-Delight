@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dish Delight</string>
+    <string name="hello_there">नमस्ते 👋</string>
+    <string name="order_happiness">ऑर्डर हैप्पीनेस, वन डिश एट ए टाइम।</string>
+    <string name="handle_cravings">आपकी cravings का हम ध्यान रखेंगे 😊</string>
+    <string name="dish_delight">डिश डिलाइट</string>
+    <string name="homee">होम</string>
+    <string name="cartt">कार्ट</string>
+    <string name="dev_contacts">डेवलपर संपर्क 📌</string>
+</resources>

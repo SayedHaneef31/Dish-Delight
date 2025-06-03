@@ -4,12 +4,12 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/house"
-        android:title="Home"/>
+        android:title="@string/homee"/>
 
     <item
         android:id="@+id/cart"
         android:icon="@drawable/cart2"
-        android:title="Cart"/>
+        android:title="@string/cartt"/>
 
 
 

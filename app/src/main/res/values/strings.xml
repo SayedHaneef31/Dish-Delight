@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Dish Delight</string>
+    <string name="hello_there">Hello there 👋</string>
+    <string name="order_happiness">Order Happiness, One Dish at a Time.</string>
+    <string name="handle_cravings">Let us handle your cravings☺️</string>
+    <string name="dish_delight">Dish Delight</string>
+    <string name="homee">Home</string>
+    <string name="cartt">Cart</string>
+    <string name="dev_contacts">Developer Contacts 📌</string>
+
+
 </resources>
