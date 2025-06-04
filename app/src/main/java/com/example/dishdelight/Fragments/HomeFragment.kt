@@ -19,6 +19,7 @@ import com.example.dishdelight.CuisineActivity
 import com.example.dishdelight.Data.Dish
 import com.example.dishdelight.Data.PageCountRequest
 import com.example.dishdelight.LocaleHelper
+import com.example.dishdelight.MainActivity
 import com.example.dishdelight.Model.CartViewModel
 import com.example.dishdelight.R
 import com.example.dishdelight.databinding.CuisineCardBinding
@@ -99,6 +100,19 @@ class HomeFragment : Fragment() {
                                 .placeholder(R.drawable.broccoli)   // optional placeholder while loading
                                 .error(R.drawable.broccoli)         // optional error image if load fails
                                 .into(cuisineCardBinding.imageView)
+
+                            cuisineCardBinding.root.setOnClickListener {
+                                val bundle = Bundle().apply {
+                                    putString("cuisine_name", cuisine.cuisine_name)
+                                    putString("cuisine_id", cuisine.cuisine_id)
+                                }
+
+                                val cuisineFragment = CuisineFragment().apply {
+                                    arguments = bundle
+                                }
+
+                                (requireActivity() as MainActivity).switchFragment(cuisineFragment)
+                            }
 
                             container.addView(cuisineCardBinding.root)
 

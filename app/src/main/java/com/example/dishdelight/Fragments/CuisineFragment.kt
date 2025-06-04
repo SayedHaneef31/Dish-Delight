@@ -1,6 +1,7 @@
 package com.example.dishdelight.Fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,40 +43,52 @@ class CuisineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Initialize UI here, e.g. set click listeners or start API calls
 
+        val cuisineName = arguments?.getString("cuisine_name")
+        val cuisineId = arguments?.getString("cuisine_id")
 
-        val cuisineName=arguments?.getString("cuisine_name")
-        val cuisineId=arguments?.getString("cuisine_id")
+        Log.d("CuisineFragment", "Cuisine Name: $cuisineName")
+        Log.d("CuisineFragment", "Cuisine ID: $cuisineId")
 
-        println("Cuisine Name: $cuisineName")
+        // Set the cuisine title
+        binding.tvCuisineTitle.text = cuisineName ?: "Cuisine"
 
         lifecycleScope.launch {
             try {
                 cuisineName?.let { name ->
                     val request = CuisineRequest(listOf(name))
-                    val response= RetrofitClient.api.getItemsByFilter(request)
+                    Log.d("CuisineFragment", "Making API request for cuisine: $name")
+                    val response = RetrofitClient.api.getItemsByFilter(request)
 
                     if (response.isSuccessful) {
                         val dishes = response.body()?.cuisines?.flatMap { it.items } ?: emptyList()
+                        Log.d("CuisineFragment", "API Response successful. Found ${dishes.size} dishes")
                         populateDishes(dishes)
                     } else {
+                        Log.e("CuisineFragment", "API Response failed with code: ${response.code()}")
                         Toast.makeText(requireContext(), "Failed: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
+                } ?: run {
+                    Log.e("CuisineFragment", "Cuisine name is null")
+                    Toast.makeText(requireContext(), "Error: Cuisine name not provided", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e("CuisineFragment", "Error fetching dishes", e)
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-
         }
-
     }
 
     private fun populateDishes(dishes: List<Dish>) {
+        Log.d("CuisineFragment", "populateDishes called with ${dishes.size} dishes")
         binding.containerSelectedCuisines.removeAllViews()
         val inflater=layoutInflater
 
+        if (dishes.isEmpty()) {
+            Log.d("CuisineFragment", "No dishes found for this cuisine")
+        }
         for (dish in dishes) {
+            Log.d("CuisineFragment", "Adding dish: ${dish.name}")
             val dishBinding = DishesBinding.inflate(inflater, binding.containerSelectedCuisines, false)
 
             dishBinding.foodNameIddddd.text = dish.name

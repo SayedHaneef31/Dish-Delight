@@ -7,7 +7,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.dishdelight.Data.CartItem
 import com.example.dishdelight.Fragments.CartFragment
-import com.example.dishdelight.Fragments.CuisineFragment
 import com.example.dishdelight.Fragments.HomeFragment
 import com.example.dishdelight.databinding.ActivityMainBinding
 
@@ -19,8 +18,6 @@ class MainActivity : AppCompatActivity() {
 
     private val homeFragment = HomeFragment()
     private val cartFragment = CartFragment()
-    private val cuisineFragment = CuisineFragment()
-
 
     private var activeFragment : Fragment = homeFragment
 
@@ -30,12 +27,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         //Adding all the supported fragments to the activity
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, homeFragment, "home")
             .add(R.id.fragment_container, cartFragment, "cart").hide(cartFragment)
-            .add(R.id.fragment_container, cuisineFragment, "cuisine").hide(cuisineFragment)
             .commit()
 
         //Setting up the bottom navigation
@@ -53,17 +48,24 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
-
     }
+
     fun switchFragment(targetFragment: Fragment) {
+        if(targetFragment == activeFragment) return
 
-        if(targetFragment==activeFragment) return
-
-        supportFragmentManager.beginTransaction()
-            .hide(activeFragment)
-            .show(targetFragment)
-            .commit()
+        // If the target fragment is not already added, add it
+        if (!targetFragment.isAdded) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, targetFragment)
+                .hide(activeFragment)
+                .show(targetFragment)
+                .commit()
+        } else {
+            supportFragmentManager.beginTransaction()
+                .hide(activeFragment)
+                .show(targetFragment)
+                .commit()
+        }
         activeFragment = targetFragment
     }
 }
