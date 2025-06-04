@@ -309,7 +309,7 @@ class HomeFragment : Fragment() {
 
     private fun showDeveloperContact() {
         AlertDialog.Builder(requireActivity())
-            .setTitle("@string/dev_contacts")
+            .setTitle("Contact Me ")
             .setMessage("Email: haneefatwork01@gmail.com\nPhone: +91 9369399872\nPortfolio: www.haneef.tech")
             .setPositiveButton("OK", null)
             .show()
