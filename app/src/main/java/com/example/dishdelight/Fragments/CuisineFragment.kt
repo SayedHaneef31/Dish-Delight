@@ -56,13 +56,14 @@ class CuisineFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 cuisineName?.let { name ->
-                    val request = CuisineRequest(listOf(name))
-                    Log.d("CuisineFragment", "Making API request for cuisine: $name")
-                    val response = RetrofitClient.api.getItemsByFilter(request)
+                    // Fetch all cuisines and their dishes (with price/rating)
+                    val response = RetrofitClient.api.getCuisineList(com.example.dishdelight.Data.PageCountRequest(1, 100))
 
                     if (response.isSuccessful) {
-                        val dishes = response.body()?.cuisines?.flatMap { it.items } ?: emptyList()
-                        Log.d("CuisineFragment", "API Response successful. Found ${dishes.size} dishes")
+                        val cuisines = response.body()?.cuisines ?: emptyList()
+                        val selectedCuisine = cuisines.find { it.cuisine_name == name }
+                        val dishes = selectedCuisine?.items ?: emptyList()
+                        Log.d("CuisineFragment", "API Response successful. Found ${dishes.size} dishes for $name")
                         populateDishes(dishes)
                     } else {
                         Log.e("CuisineFragment", "API Response failed with code: ${response.code()}")
@@ -88,12 +89,12 @@ class CuisineFragment : Fragment() {
             Log.d("CuisineFragment", "No dishes found for this cuisine")
         }
         for (dish in dishes) {
-            Log.d("CuisineFragment", "Adding dish: ${dish.name}")
+            Log.d("CuisineFragment", "Dish data: $dish")
             val dishBinding = DishesBinding.inflate(inflater, binding.containerSelectedCuisines, false)
 
             dishBinding.foodNameIddddd.text = dish.name
-            dishBinding.foodRatingIddddd.text = dish.rating?.plus(" ⭐") ?: "N/A"
-            dishBinding.foodPriceIddddd.text = "₹ ${dish.price ?: "N/A"}"
+            dishBinding.foodRatingIddddd.text = if (!dish.rating.isNullOrBlank()) dish.rating + " ⭐" else "N/A"
+            dishBinding.foodPriceIddddd.text = if (!dish.price.isNullOrBlank()) "₹ ${dish.price}" else "₹ N/A"
 
             Glide.with(this)
                 .load(dish.image_url)

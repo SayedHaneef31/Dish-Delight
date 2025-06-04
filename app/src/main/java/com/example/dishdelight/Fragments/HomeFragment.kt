@@ -78,7 +78,7 @@ class HomeFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.getCuisineList(PageCountRequest(3,10))
+                val response = RetrofitClient.api.getCuisineList(PageCountRequest(2,10))
 
                 if (response.isSuccessful)
                 {
