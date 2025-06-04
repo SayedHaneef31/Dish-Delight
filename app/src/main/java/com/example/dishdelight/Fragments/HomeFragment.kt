@@ -3,21 +3,22 @@ package com.example.dishdelight.Fragments
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.dishdelight.API.PageCountRequest
 import com.example.dishdelight.API.RetrofitClient
 import com.example.dishdelight.CuisineActivity
-import com.example.dishdelight.Data.CartItem
 import com.example.dishdelight.Data.Dish
 import com.example.dishdelight.LocaleHelper
+import com.example.dishdelight.Model.CartViewModel
 import com.example.dishdelight.R
 import com.example.dishdelight.databinding.CuisineCardBinding
 import com.example.dishdelight.databinding.FragmentHomeBinding
@@ -27,7 +28,8 @@ import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
-    private val cartItems = mutableListOf<CartItem>()
+    private val cartViewModel: CartViewModel by activityViewModels()
+
     private var _binding: FragmentHomeBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -44,18 +46,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Initialize UI here, e.g. set click listeners or start API calls
 
 
-        populateCuisineCategory()
+        populateCuisineCategory()     //TODO :DONE AND WORKING
 
-        popluateFamousFood()
+        popluateFamousFood()          //TODO :DONE AND
 
-
-
-        floatingButtwonWorking()
-
-        enableCuisineNavigation()
+        floatingButtwonWorking()      //TODO :DONE WITH SOME BUGS
 
 
 
@@ -132,9 +129,20 @@ class HomeFragment : Fragment() {
 //        }
     }
 
-    private fun enableCuisineNavigation() {
-//        binding.
-    }
+//    private fun enableCuisineNavigation(cuisine: Cuisine)
+//    {
+//        val bundle= Bundle().apply {
+//            putString("cuisine_id",cuisine.cuisine_id)
+//            putString("cuisine_name",cuisine.cuisine_name)
+//
+//        }
+//
+//        val cuisineFragment= CuisineFragment()
+//        cuisineFragment.arguments=bundle
+//
+//        (activity as? MainActivity)?.switchFragment(cuisineFragment)
+//
+//    }
 
 
 
@@ -191,16 +199,17 @@ class HomeFragment : Fragment() {
                 popularFoodCardBinding.btnAddIddddddd.visibility = View.GONE
                 popularFoodCardBinding.quantityIddddd.text = "1"
 
+                cartViewModel.addItem(dish, 1)
                 // Add dish to cart with quantity 1
-                addToCart(dish, 1)
+                //addToCart(dish, 1)
             }
 
             popularFoodCardBinding.btnPlusIddddd.setOnClickListener {
                 var quantity = popularFoodCardBinding.quantityIddddd.text.toString().toInt()
                 quantity++
                 popularFoodCardBinding.quantityIddddd.text = quantity.toString()
-
-                updateCartQuantity(dish, quantity)
+                cartViewModel.updateQuantity(dish, quantity)
+                //updateCartQuantity(dish, quantity)
             }
 
             popularFoodCardBinding.btnMinusIdddd.setOnClickListener {
@@ -208,12 +217,13 @@ class HomeFragment : Fragment() {
                 if (quantity > 1) {
                     quantity--
                     popularFoodCardBinding.quantityIddddd.text = quantity.toString()
-                    updateCartQuantity(dish, quantity)
+                    cartViewModel.updateQuantity(dish, quantity)
+                    //updateCartQuantity(dish, quantity)
                 } else {
                     popularFoodCardBinding.quantitySelector.visibility = View.GONE
                     popularFoodCardBinding.btnAddIddddddd.visibility = View.VISIBLE
-
-                    removeFromCart(dish)
+                    cartViewModel.removeItem(dish)
+                    //removeFromCart(dish)
                 }
             }
 
@@ -221,27 +231,27 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun addToCart(dish: Dish, quantity: Int) {
-        var existingItem = cartItems.find { it.dish.id == dish.id }
-        if(existingItem==null)
-        {
-            cartItems.add(CartItem(dish, quantity))
-        }
-        else
-        {
-            existingItem.quantity = quantity
+//    private fun addToCart(dish: Dish, quantity: Int) {
+//        var existingItem = cartItems.find { it.dish.id == dish.id }
+//        if(existingItem==null)
+//        {
+//            cartItems.add(CartItem(dish, quantity))
+//        }
+//        else
+//        {
+//            existingItem.quantity = quantity
+//
+//        }
+//    }
 
-        }
-    }
-
-    private fun updateCartQuantity(dish: Dish, newQuantity: Int) {
-        val existingItem = cartItems.find { it.dish.id == dish.id }
-        existingItem?.quantity = newQuantity
-    }
-
-    private fun removeFromCart(dish: Dish) {
-        cartItems.removeIf { it.dish.id == dish.id }
-    }
+//    private fun updateCartQuantity(dish: Dish, newQuantity: Int) {
+//        val existingItem = cartItems.find { it.dish.id == dish.id }
+//        existingItem?.quantity = newQuantity
+//    }
+//
+//    private fun removeFromCart(dish: Dish) {
+//        cartItems.removeIf { it.dish.id == dish.id }
+//    }
 
 
     private fun floatingButtwonWorking() {

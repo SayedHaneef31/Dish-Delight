@@ -59,5 +59,8 @@ dependencies {
     //Glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
 
+    //AndroidX Fragement......For ViewModel
+    implementation("androidx.fragment:fragment-ktx:1.6.0")
+
 
 }

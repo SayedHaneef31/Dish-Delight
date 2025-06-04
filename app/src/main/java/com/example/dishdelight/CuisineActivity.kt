@@ -9,7 +9,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.dishdelight.databinding.ActivityCuisineBinding
 import com.example.dishdelight.databinding.DishesBinding
-import com.example.dishdelight.databinding.PopularFoodCardBinding
 
 class CuisineActivity : AppCompatActivity() {
 

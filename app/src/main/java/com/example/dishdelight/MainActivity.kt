@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.dishdelight.Data.CartItem
 import com.example.dishdelight.Fragments.CartFragment
 import com.example.dishdelight.Fragments.CuisineFragment
 import com.example.dishdelight.Fragments.HomeFragment
@@ -13,6 +14,8 @@ import com.example.dishdelight.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private val cartItems = mutableListOf<CartItem>()
 
     private val homeFragment = HomeFragment()
     private val cartFragment = CartFragment()
@@ -53,7 +56,10 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-    private fun switchFragment(targetFragment: Fragment) {
+    fun switchFragment(targetFragment: Fragment) {
+
+        if(targetFragment==activeFragment) return
+
         supportFragmentManager.beginTransaction()
             .hide(activeFragment)
             .show(targetFragment)
