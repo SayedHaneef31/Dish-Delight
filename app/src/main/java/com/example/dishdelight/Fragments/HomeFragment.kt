@@ -13,10 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.dishdelight.API.PageCountRequest
+//import com.example.dishdelight.API.PageCountRequest
 import com.example.dishdelight.API.RetrofitClient
 import com.example.dishdelight.CuisineActivity
 import com.example.dishdelight.Data.Dish
+import com.example.dishdelight.Data.PageCountRequest
 import com.example.dishdelight.LocaleHelper
 import com.example.dishdelight.Model.CartViewModel
 import com.example.dishdelight.R
@@ -50,7 +51,7 @@ class HomeFragment : Fragment() {
 
         populateCuisineCategory()     //TODO :DONE AND WORKING
 
-        popluateFamousFood()          //TODO :DONE AND
+        popluateFamousFood()          //TODO :DONE AND WORKING
 
         floatingButtwonWorking()      //TODO :DONE WITH SOME BUGS
 

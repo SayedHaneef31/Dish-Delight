@@ -52,42 +52,42 @@ class CartActivity : AppCompatActivity()
     }
 
     private fun populateCart() {
-        repeat(10) {
-            val popularFoodCardBinding = PopularFoodCardBinding.inflate(layoutInflater)
-
-            popularFoodCardBinding.foodNameIddddd.text="Green Salad"
-            popularFoodCardBinding.foodRatingIddddd.text="4.1 ⭐"
-            popularFoodCardBinding.foodPriceIddddd.text="₹ 349"
-
-            popularFoodCardBinding.btnAddIddddddd.setOnClickListener {
-                popularFoodCardBinding.quantitySelector.visibility = View.VISIBLE
-                popularFoodCardBinding.btnAddIddddddd.visibility = View.GONE
-                popularFoodCardBinding.quantityIddddd.text="1"
-            }
-
-            popularFoodCardBinding.btnPlusIddddd.setOnClickListener {
-                var quantity = popularFoodCardBinding.quantityIddddd.text.toString().toInt()
-                quantity++
-                popularFoodCardBinding.quantityIddddd.text = quantity.toString()
-            }
-
-            popularFoodCardBinding.btnMinusIdddd.setOnClickListener {
-                var quantity = popularFoodCardBinding.quantityIddddd.text.toString().toInt()
-                if(quantity>1){
-                    quantity--
-                    popularFoodCardBinding.quantityIddddd.text = quantity.toString()
-                }
-                else
-                {
-                    popularFoodCardBinding.quantitySelector.visibility = View.GONE
-                    popularFoodCardBinding.btnAddIddddddd.visibility = View.VISIBLE
-
-                }
-            }
-
-            //Adding card view to container
-            binding.containerSelectedFoods.addView(popularFoodCardBinding.root)
-
-        }
+//        repeat(10) {
+//            val popularFoodCardBinding = PopularFoodCardBinding.inflate(layoutInflater)
+//
+//            popularFoodCardBinding.foodNameIddddd.text="Green Salad"
+//            popularFoodCardBinding.foodRatingIddddd.text="4.1 ⭐"
+//            popularFoodCardBinding.foodPriceIddddd.text="₹ 349"
+//
+//            popularFoodCardBinding.btnAddIddddddd.setOnClickListener {
+//                popularFoodCardBinding.quantitySelector.visibility = View.VISIBLE
+//                popularFoodCardBinding.btnAddIddddddd.visibility = View.GONE
+//                popularFoodCardBinding.quantityIddddd.text="1"
+//            }
+//
+//            popularFoodCardBinding.btnPlusIddddd.setOnClickListener {
+//                var quantity = popularFoodCardBinding.quantityIddddd.text.toString().toInt()
+//                quantity++
+//                popularFoodCardBinding.quantityIddddd.text = quantity.toString()
+//            }
+//
+//            popularFoodCardBinding.btnMinusIdddd.setOnClickListener {
+//                var quantity = popularFoodCardBinding.quantityIddddd.text.toString().toInt()
+//                if(quantity>1){
+//                    quantity--
+//                    popularFoodCardBinding.quantityIddddd.text = quantity.toString()
+//                }
+//                else
+//                {
+//                    popularFoodCardBinding.quantitySelector.visibility = View.GONE
+//                    popularFoodCardBinding.btnAddIddddddd.visibility = View.VISIBLE
+//
+//                }
+//            }
+//
+//            //Adding card view to container
+//            binding.containerCartFoods.addView(popularFoodCardBinding.root)
+//
+//        }
     }
 }
